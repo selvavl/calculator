@@ -1,0 +1,135 @@
+* {
+    border: 1px solid red;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+
+}
+
+#calculator {
+    padding: 20px;
+    border-radius: 20px;
+}
+
+#display {
+    display: grid;
+    grid-template-columns: 30px auto;
+    grid-template-rows: 1.2em 3em;
+    grid-template-areas:
+    "mini mini"
+    "operator main";
+}
+
+#mini {
+    grid-area: mini;
+}
+
+#operator {
+    grid-area: operator;
+}
+
+#main {
+    grid-area: main;
+}
+
+#buttons {
+    display: grid;
+    grid-template-areas:    "clear  posneg  backspace divide"
+                            "num7   num8    num9    multiply"
+                            "num4   num5    num6    subtract"
+                            "num1   num2    num3    add"
+                            "num0   num0    dot     equal";
+    grid-template-columns: repeat(4, 50px);
+    grid-template-rows: repeat(5, 50px);
+    gap: 5px;
+    padding: 10px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    user-select: none;
+}
+
+#clear {
+    grid-area: clear;
+}
+
+#posneg {
+    grid-area: posneg;
+}
+
+#backspace{
+    grid-area: backspace;
+}
+
+#divide {
+    grid-area: divide;
+}
+
+#multiply {
+    grid-area: multiply;
+}
+
+#subtract {
+    grid-area: subtract;
+}
+
+#add {
+    grid-area: add;
+}
+
+#equal{
+    grid-area: equal;
+}
+
+#dot {
+    grid-area: dot;
+}
+
+#num0 {
+    grid-area: num0;
+    border-radius: 25px;
+
+}
+
+#num1 {
+    grid-area: num1;
+}
+
+#num2 {
+    grid-area: num2;
+}
+
+#num3 {
+    grid-area: num3;
+}
+
+#num4 {
+    grid-area: num4;
+}
+
+#num5 {
+    grid-area: num5;
+}
+
+#num6 {
+    grid-area: num6;
+}
+
+#num7 {
+    grid-area: num7;
+}
+
+#num8 {
+    grid-area: num8;
+}
+
+#num9 {
+    grid-area: num9;
+}
