@@ -41,31 +41,37 @@ const mini = document.querySelector("#mini");
 const operator = document.querySelector("#operator");
 const main = document.querySelector("#main");
 
-console.log(buttons);
-
 let operation = {
     displayNumber: "",
-    memoryNumber: "",
+    memoryNumber: "0",
     operator: "",
 }
 
+function showNumber() {
+    main.innerText = operation.memoryNumber;
+}
 
-
-buttons.forEach(button => button.addEventListener("click", function() {
+function buttonListener(){
+    buttons.forEach(button => button.addEventListener("click", function() {
     
-    if(button.classList.contains("number")) {   //Display and assign displayNumber
-        operation.displayNumber += button.innerText;
-        main.innerText = operation.displayNumber;
-
-    } else if (button.classList.contains("operator")) {
-        operation.operator = button.innerText;  //Display and assign Operator 
-        operator.innerText = operation.operator;
+        if(button.classList.contains("number")) {   //Display and assign displayNumber
+            operation.displayNumber += button.innerText;
+            main.innerText = operation.displayNumber;
     
-    } else if (button.id == "posneg") {
-        operation.displayNumber = String(operation.displayNumber * -1); //change positive or negative value to displayNumber
-        main.innerText = operation.displayNumber;
-    }
+        } else if (button.classList.contains("operator")) {
+            operation.operator = button.innerText;  //Display and assign Operator 
+            operator.innerText = operation.operator;
+        
+        } else if (button.id == "posneg") {
+            operation.displayNumber = String(operation.displayNumber * -1); //change positive or negative value to displayNumber
+            main.innerText = operation.displayNumber;
+        }
+    
+        console.log(operation);
+    }))
+        
+}
 
-    console.log(operation);
-}))
+showNumber();
 
+buttonListener();
