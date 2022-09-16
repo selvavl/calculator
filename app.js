@@ -54,7 +54,7 @@ let operation = {
     displayNumber: "0",
     memory: "",
     operator: "",
-
+    equalOperator: "",
     equalToken: false,
     equalMemory: "",
     operatorToken: false,
@@ -64,9 +64,10 @@ function newOperation() {
     operation.displayNumber = "0";
     operation.memory = "";
     operation.operator = "";
-    equalToken = false;
-    equalMemory = "";
-    operatorToken = false;
+    operation.equalToken = false;
+    operation.equalMemory = "";
+    operation.equalOperator= "";
+    operation.operatorToken = false;
     main.innerText = operation.displayNumber;
     operator.innerText = operation.operator;
     memory.innerText = operation.memory;
@@ -75,6 +76,7 @@ function newOperation() {
 function eraseEqualMemory() {
     operation.equalToken = false;
     operation.memory = "";
+    operation.equalOperator = "";
 }
 
 function buttonListener(){
@@ -123,10 +125,14 @@ function buttonListener(){
                 operation.equalToken = true;
                 operation.equalMemory = operation.displayNumber;
                 operation.displayNumber = operate(operation.memory, operation.displayNumber, operation.operator);
+                operation.equalOperator = operation.operator;
+                operation.operator = "";
+                operator.innerText = operation.operator;
                 main.innerText = operation.displayNumber;
             
             } else if(operation.equalToken) { //case equal is used right away again
-                operation.displayNumber = operate(operation.displayNumber, operation.equalMemory, operation.operator);
+                operation.memory = "";  
+                operation.displayNumber = operate(operation.displayNumber, operation.equalMemory, operation.equalOperator);
                 main.innerText = operation.displayNumber;
             } else {
                 console.log("equal: do nothing");
@@ -155,15 +161,17 @@ function buttonListener(){
                 if(this.innerText == "0") {
                     console.log("number 0: do nothing") //If 0 is shown in display and 0 button is pressed, then do nothing.
 
-                } else if(this.innerText != "0") {
+                } else if(operation.displayNumber == "0" && this.innerText != "0") {
                     operation.displayNumber = ""; // If 0 is shown in display and a number button different from 0 is pressed then clear the display.
                 }
 
-            } else if(operation.operator != "" && operation.operatorToken == false) {
+            } else if(operation.operator != "") {
                     operation.memory = operation.displayNumber;
                     operation.displayNumber = "";
-                    operation.operatorToken = true;
                 
+            } else if (operation.equalMemory != "" || operation.equalOperator != "") {
+                eraseEqualMemory();
+                newOperation();
             }
 
             operation.displayNumber += this.innerText;
@@ -171,8 +179,10 @@ function buttonListener(){
 
             
 
+        } else if(button.id == "clear") {
+            newOperation();
         }
-        console.log(operation);
+        console.table(operation);
 
 
 
