@@ -121,27 +121,17 @@ function buttonListener(){
             }
 
         } else if(button.id == "equal") {
-            if(operation.displayNumber != "" && operation.memory != "" && operation.operator != "" && operation.equalToken == false) { //adding a token in case equal is used right away again
-                operation.equalToken = true;
-                operation.equalMemory = operation.displayNumber;
+            if(operation.displayNumber != "" && operation.memory != "" && operation.operator != "") { //adding a token in case equal is used right away again
                 operation.displayNumber = operate(operation.memory, operation.displayNumber, operation.operator);
-                operation.equalOperator = operation.operator;
-                operation.operator = "";
-                operator.innerText = operation.operator;
                 main.innerText = operation.displayNumber;
             
-            } else if(operation.equalToken) { //case equal is used right away again
-                operation.memory = "";  
-                operation.displayNumber = operate(operation.displayNumber, operation.equalMemory, operation.equalOperator);
-                main.innerText = operation.displayNumber;
-            } else {
-                console.log("equal: do nothing");
-            }
+            } 
 
         } else if(button.classList.contains("operator")) {
             if(operation.displayNumber != "" && operation.memory != "" && operation.operator != "") {
                 eraseEqualMemory();
                 operation.displayNumber = operate(operation.memory, operation.displayNumber, operator);
+                operation.memory = "";
                 main.innerText = operation.displayNumber;
 
             }
