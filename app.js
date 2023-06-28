@@ -26,12 +26,28 @@ const main = document.querySelector('#main');
 const memory = document.querySelector('#memory');
 
 let operation = {
-    displayNumber: 300,
+    displayNumber: 0,
     memory: '',
     operator: '',
     operatorToken: false,
-    equalMemory: '',
+    equalToken: false,
+    //equalMemory: '',
     
+}
+
+let newOperation = () => {
+    operation = {
+        displayNumber: 0,
+        memory: '',
+        operator: '',
+        operatorToken: false,
+        equalToken: false,
+        //equalMemory: '',
+    }
+
+    main.innerText = operation.displayNumber;
+    operator.innerText = operation.operator;
+    memory.innerText = operation.memory;
 }
 
 main.innerText = operation.displayNumber;
@@ -65,7 +81,6 @@ function buttonListener(){
             } else {
                 operation.displayNumber = String(operation.displayNumber);
                 operation.displayNumber = operation.displayNumber.slice(0, -1);
-                // operation.displayNumber = parseFloat(operation.displayNumber);
                 main.innerText = operation.displayNumber;
 
             } 
@@ -82,13 +97,27 @@ function buttonListener(){
             }
 
         } else if(button.id == 'equal') {
-            if(operation.equalMemory != '') {
-                operation.displayNumber = operate(operation.displayNumber, operation.equalMemory, operation.operator);
+            //if equal was pressed right before, make the same operation
+            if(operation.equalToken) {
+                operation.displayNumber = operate(operation.displayNumber, operation.memory, operation.operator);
+                main.innerText = operation.displayNumber;
+                memory.innerText = operation.memory;
+                
+            // if there is only a value in displayNumber equal must return that float number to erase dots
+            } else if(operation.displayNumber != '' && operation.memory == '' && operation.operator == ''){
+                operation.displayNumber = String(parseFloat(operation.displayNumber));
                 main.innerText = operation.displayNumber;
 
+            //if there is an operator and a display number, use the displaynumber as memory and make an operation with the same number
+            } else if (operation.displayNumber != '' && operation.memory == '' && operation.operator != '') {
+                operation.memory = operation.displayNumber;
+                operation.displayNumber = operate(operation.displayNumber, operation.memory, operation.operator);
+                operation.equalToken = true;
+                main.innerText = operation.displayNumber;
+                memory.innerText = operation.memory;
 
             } else if(operation.displayNumber != '' && operation.memory != '' && operation.operator != '') { //adding a token in case equal is used right away again
-                operation.equalMemory = operation.displayNumber;
+                operation.//equalMemory = operation.displayNumber;
                 operation.displayNumber = operate(operation.memory, operation.displayNumber, operation.operator);
                 main.innerText = operation.displayNumber;
                 
@@ -132,7 +161,7 @@ function buttonListener(){
             
 
         } else if(button.id == 'clear') {
-           //newOperation();
+           newOperation();
         }
         console.table(operation);
 
