@@ -16,15 +16,16 @@
 
 #display {
     display: grid;
-    grid-template-columns: 30px auto;
-    grid-template-rows: 1.2em 3em;
     grid-template-areas:
-    "mini mini"
+    "memory memory"
     "operator main";
+    grid-template-columns: 30px 220px;
+    grid-template-rows: 1.2em 3em;
+
 }
 
-#mini {
-    grid-area: mini;
+#memory {
+    grid-area: memory;
 }
 
 #operator {

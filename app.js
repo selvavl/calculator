@@ -2,19 +2,19 @@ function operate(a, b, operator) {
     
     switch (operator) {
         case '+':
-            return parseFloat(a) + parseFloat(b);
+            return String(parseFloat(a) + parseFloat(b));
             // break;
 
         case '-':
-            return parseFloat(a) - parseFloat(b);
+            return String(parseFloat(a) - parseFloat(b));
             // break;
 
         case '*':
-            return parseFloat(a) * parseFloat(b);
+            return String(parseFloat(a) * parseFloat(b));
             // break;
 
         case '/':
-            return parseFloat(a) / parseFloat(b);
+            return String(parseFloat(a) / parseFloat(b));
             // break;
 
     }
@@ -23,14 +23,15 @@ function operate(a, b, operator) {
 const buttons = document.querySelectorAll('.button');
 const operator = document.querySelector('#operator');
 const main = document.querySelector('#main');
-const memory = document.querySelector('#memory');
+const memoryDisplay = document.querySelector('#memory');
 
 let operation = {
     displayNumber: 0,
     memory: '',
     operator: '',
-    operatorToken: false,
+    // operatorToken: false,
     equalToken: false,
+    lastPressed: '',
     //equalMemory: '',
     
 }
@@ -40,8 +41,9 @@ let newOperation = () => {
         displayNumber: '0',
         memory: '',
         operator: '',
-        operatorToken: false,
+        // operatorToken: false,
         equalToken: false,
+        lastPressed: '',
         //equalMemory: '',
     }
 
@@ -68,6 +70,7 @@ function buttonListener(){
                 operation.displayNumber += this.innerText;
                 main.innerText = operation.displayNumber;
             }
+            operation.lastPressed = this.innerText;
 
         }else if (button.id == 'posneg') {
             //if number in display is 0 then posneg does nothing
@@ -82,6 +85,7 @@ function buttonListener(){
                 operation.displayNumber = '-' + operation.displayNumber;
                 main.innerText = operation.displayNumber;
             }
+            operation.lastPressed = this.innerText;
 
         } else if (button.id == 'backspace') { //recordar poner una condicion para hacer una nueva operacion en caso amerite
             if(operation.displayNumber == '0') {
@@ -90,19 +94,50 @@ function buttonListener(){
             } else if (operation.displayNumber.length == 1 || (operation.displayNumber.includes('-') && operation.displayNumber.length == 2)) {
                 operation.displayNumber = '0';
                 main.innerText = operation.displayNumber;
+
             } else {
                 operation.displayNumber = operation.displayNumber.slice(0,-1);
                 main.innerText = operation.displayNumber;
             }
+            operation.lastPressed = this.innerText;
 
         } else if (button.id == 'clear') {
             newOperation();
+            operation.lastPressed = this.innerText;
         
-        } else if button.id == ('dot') {
-            if (operation.displayNumber.contains('.')) {
+        } else if (button.id == ('dot')) {
+            if (operation.displayNumber.includes('.')) {
                 console.log('dot, do nothing');
 
-            } else
+            } else {
+                operation.displayNumber += this.innerText;
+                main.innerText = operation.displayNumber;
+
+            }
+            operation.lastPressed = this.innerText;
+
+        } else if (button.classList.contains('operator')) {
+            if (operation.memory == '') {
+                operation.operator = this.innerText;
+                operator.innerText = operation.operator;
+                //mandamos lo del display a la memoria
+                operation.memory = operation.displayNumber;
+                memory.innerText = `${operation.memory} ${operation.operator}`
+                operation.displayNumber = '0';
+                
+            } else if (operation.displayNumber && operation.memory && operation.operator) {
+
+                operation.memory = operate(operation.memory,operation.displayNumber, operation.operator);
+                operation.operator = this.innerText;
+                // operation.memory = operation.displayNumber;
+                memory.innerText = `${operation.memory} ${operation.operator}`
+                operator.innerText = this.innerText;
+                
+            }
+
+            operation.lastPressed = this.innerText;
+            
+
         }
 
         console.table(operation);
