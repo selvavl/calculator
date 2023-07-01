@@ -29,7 +29,7 @@ let operation = {
     displayNumber: 0,
     memory: '',
     operator: '',
-    // operatorToken: false,
+    operatorToken: false,
     equalToken: false,
     lastPressed: '',
     //equalMemory: '',
@@ -41,7 +41,7 @@ let newOperation = () => {
         displayNumber: '0',
         memory: '',
         operator: '',
-        // operatorToken: false,
+        operatorToken: false,
         equalToken: false,
         lastPressed: '',
         //equalMemory: '',
@@ -105,7 +105,7 @@ function buttonListener(){
             newOperation();
             operation.lastPressed = this.innerText;
         
-        } else if (button.id == ('dot')) {
+        } else if (button.id == 'dot') {
             if (operation.displayNumber.includes('.')) {
                 console.log('dot, do nothing');
 
@@ -117,27 +117,28 @@ function buttonListener(){
             operation.lastPressed = this.innerText;
 
         } else if (button.classList.contains('operator')) {
-            if (operation.memory == '') {
-                operation.operator = this.innerText;
-                operator.innerText = operation.operator;
-                //mandamos lo del display a la memoria
+            
+            if (operation.operatorToken == false) {
+                operation.operatorToken = true;
                 operation.memory = operation.displayNumber;
-                memory.innerText = `${operation.memory} ${operation.operator}`
-                operation.displayNumber = '0';
-                
-            } else if (operation.displayNumber && operation.memory && operation.operator) {
-
-                operation.memory = operate(operation.memory,operation.displayNumber, operation.operator);
-                operation.operator = this.innerText;
-                // operation.memory = operation.displayNumber;
-                memory.innerText = `${operation.memory} ${operation.operator}`
-                operator.innerText = this.innerText;
-                
+                operation.displayNumber = '';
+                main.innerText = operation.displayNumber;
+                memory.innerText = operation.memory;
             }
 
+            operation.operator = this.innerText;
+            operator.innerText = operation.operator;
             operation.lastPressed = this.innerText;
-            
 
+        } else if (button.id == 'equal') {
+            if (operation.displayNumber != '' || operation.displayNumber != '' || operation.operator != '') {
+                console.log('do nothing')
+            } else {
+                operation.displayNumber = operate(operation.memory, operation.displayNumber, operation.operator);
+                main.innerText = operation.displayNumber;
+            }
+
+            
         }
 
         console.table(operation);
