@@ -131,11 +131,16 @@ function buttonListener(){
             operation.lastPressed = this.innerText;
 
         } else if (button.id == 'equal') {
-            if (operation.displayNumber != '' || operation.displayNumber != '' || operation.operator != '') {
+            if (operation.displayNumber == '' || operation.displayNumber == '' || operation.operator == '') {
                 console.log('do nothing')
             } else {
+                memory.innerText = `${operation.memory} ${operation.operator} ${operation.displayNumber} =`
                 operation.displayNumber = operate(operation.memory, operation.displayNumber, operation.operator);
                 main.innerText = operation.displayNumber;
+                operation.memory = '';
+                operation.operatorToken = false;
+                operation.operator = '';
+                operator.innerText = operation.operator;
             }
 
             
