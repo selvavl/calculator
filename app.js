@@ -26,7 +26,7 @@ const main = document.querySelector('#main');
 const memoryDisplay = document.querySelector('#memory');
 
 let operation = {
-    displayNumber: 0,
+    displayNumber: '0',
     memory: '',
     operator: '',
     operatorToken: false,
@@ -62,6 +62,9 @@ function buttonListener(){
             newOperation();
         
         } else if(button.classList.contains('number')) {
+            if(operation.equalToken) {
+                newOperation();
+            }
             if(operation.displayNumber == '0'/*ver luego la condicion que puede aparecer aqui con algun token */) {
                 operation.displayNumber = this.innerText;
                 main.innerText = operation.displayNumber;
@@ -74,7 +77,10 @@ function buttonListener(){
 
         }else if (button.id == 'posneg') {
             //if number in display is 0 then posneg does nothing
-            if (operation.displayNumber == '0') {
+            if(operation.equalToken){
+                newOperation();
+            }
+            if (operation.displayNumber == '0' || operation.displayNumber == '') {
                 console.log('do nothing');
 
             } else if (operation.displayNumber.includes('-')) {
@@ -88,6 +94,9 @@ function buttonListener(){
             operation.lastPressed = this.innerText;
 
         } else if (button.id == 'backspace') { //recordar poner una condicion para hacer una nueva operacion en caso amerite
+            if(operation.equalToken) {
+                newOperation();
+            }
             if(operation.displayNumber == '0') {
                 console.log('do nothing');
             //si hay un solo numero en display o un negativo de un solo digito, el display pasa a 0    
@@ -106,6 +115,9 @@ function buttonListener(){
             operation.lastPressed = this.innerText;
         
         } else if (button.id == 'dot') {
+            if(operation.equalToken) {
+                newOperation();
+            }
             if (operation.displayNumber.includes('.')) {
                 console.log('dot, do nothing');
 
@@ -117,6 +129,18 @@ function buttonListener(){
             operation.lastPressed = this.innerText;
 
         } else if (button.classList.contains('operator')) {
+
+            if(operation.equalToken){
+                operation.equalToken = false;
+            }
+
+            if(operation.displayNumber.slice(-1) == '.') {
+                operation.displayNumber = operation.displayNumber.slice(0,-1);
+            }
+
+            if(operation.displayNumber == '-0') {
+                operation.displayNumber = '0';
+            }
             
             if (operation.operatorToken == false) {
                 operation.operatorToken = true;
@@ -131,19 +155,23 @@ function buttonListener(){
             operation.lastPressed = this.innerText;
 
         } else if (button.id == 'equal') {
-            if (operation.displayNumber == '' || operation.displayNumber == '' || operation.operator == '') {
-                console.log('do nothing')
-            } else {
-                memory.innerText = `${operation.memory} ${operation.operator} ${operation.displayNumber} =`
-                operation.displayNumber = operate(operation.memory, operation.displayNumber, operation.operator);
+            if (operation.displayNumber != '' && operation.displayNumber != '' && operation.operator != '') {
+                if(operation.displayNumber.slice(-1) == '.') {
+                    operation.displayNumber = operation.displayNumber.slice(0,-1);
+                }
+                memory.innerText = `${operation.memory} ${operation.operator} ${operation.displayNumber} =`;
+                operation.displayNumber = operate(operation.memory,operation.displayNumber, operation.operator);
                 main.innerText = operation.displayNumber;
                 operation.memory = '';
-                operation.operatorToken = false;
                 operation.operator = '';
-                operator.innerText = operation.operator;
+                operator.innerText = '';
+                operation.operatorToken = false;
+                operation.equalToken = true;
+            } else {
+                console.log ('do nothing equal')
             }
 
-            
+             
         }
 
         console.table(operation);
