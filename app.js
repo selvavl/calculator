@@ -2,20 +2,20 @@ function operate(a, b, operator) {
     
     switch (operator) {
         case '+':
-            return String(parseFloat(a) + parseFloat(b));
-            // break;
+            return String(Math.round((parseFloat(a) + parseFloat(b))*1000000000000000000)/1000000000000000000);
+            break;
 
         case '-':
-            return String(parseFloat(a) - parseFloat(b));
-            // break;
+            return String(Math.round((parseFloat(a) - parseFloat(b))*1000000000000000000)/1000000000000000000);
+            break;
 
         case '*':
-            return String(parseFloat(a) * parseFloat(b));
-            // break;
+            return String(Math.round((parseFloat(a) * parseFloat(b))*1000000000000000000)/1000000000000000000);
+            break;
 
         case '/':
-            return String(parseFloat(a) / parseFloat(b));
-            // break;
+            return String(Math.round((parseFloat(a) / parseFloat(b))*1000000000000000000)/1000000000000000000);
+            break;
 
     }
 }
