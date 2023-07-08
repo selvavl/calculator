@@ -1,11 +1,35 @@
 * {
-    border: 1px solid red;
+    border: 0px solid red;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 500;
 }
+
+footer > p {
+    color: aliceblue;
+    font-size: 0.7em;
+    text-align: center;
+}
+
+body {
+    background-color: #041912;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+  }
 
 #container {
     display: flex;
     justify-content: center;
     padding: 20px;
+
+}
+
+#calculator {
+    background-color: black;-
 
 }
 
@@ -27,14 +51,28 @@
 
 #memory {
     grid-area: memory;
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
+
 
 #operator {
     grid-area: operator;
+    color: white;
+    font-size: 2em;
 }
+
 
 #main {
     grid-area: main;
+    color: white;
+    font-size: 1.75em;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
 }
 
 #buttons {
@@ -60,14 +98,17 @@
 
 #clear {
     grid-area: clear;
+    background-color: lightgray;
 }
 
 #posneg {
     grid-area: posneg;
+    background-color: lightgray;
 }
 
 #backspace{
     grid-area: backspace;
+    background-color: lightgray;
 }
 
 #divide {
@@ -88,16 +129,30 @@
 
 #equal{
     grid-area: equal;
+    background-color: gray;
+    color: white;
 }
 
 #dot {
     grid-area: dot;
+    background-color: rgb(72, 72, 72);
+    color: white;
 }
 
 #num0 {
     grid-area: num0;
     border-radius: 25px;
 
+}
+
+.number {
+    background-color: rgb(72, 72, 72);
+    color: white;
+}
+
+.operator {
+    background-color: orange;
+    color: white;
 }
 
 #num1 {

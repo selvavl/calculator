@@ -2,19 +2,19 @@ function operate(a, b, operator) {
     
     switch (operator) {
         case '+':
-            return String(Math.round((parseFloat(a) + parseFloat(b))*1000000000000000000)/1000000000000000000);
+            return String(Math.round((parseFloat(a) + parseFloat(b))*10000000000000)/10000000000000);
             break;
 
         case '-':
-            return String(Math.round((parseFloat(a) - parseFloat(b))*1000000000000000000)/1000000000000000000);
+            return String(Math.round((parseFloat(a) - parseFloat(b))*10000000000000)/10000000000000);
             break;
 
         case '*':
-            return String(Math.round((parseFloat(a) * parseFloat(b))*1000000000000000000)/1000000000000000000);
+            return String(Math.round((parseFloat(a) * parseFloat(b))*10000000000000)/10000000000000);
             break;
 
         case '/':
-            return String(Math.round((parseFloat(a) / parseFloat(b))*1000000000000000000)/1000000000000000000);
+            return String(Math.round((parseFloat(a) / parseFloat(b))*10000000000000)/10000000000000);
             break;
 
     }
@@ -24,6 +24,7 @@ const buttons = document.querySelectorAll('.button');
 const operator = document.querySelector('#operator');
 const main = document.querySelector('#main');
 const memoryDisplay = document.querySelector('#memory');
+const equal = document.querySelector('#equal')
 
 let operation = {
     displayNumber: '0',
@@ -32,7 +33,7 @@ let operation = {
     operatorToken: false,
     equalToken: false,
     lastPressed: '',
-    //equalMemory: '',
+    tooBig: false,
     
 }
 
@@ -44,7 +45,7 @@ let newOperation = () => {
         operatorToken: false,
         equalToken: false,
         lastPressed: '',
-        //equalMemory: '',
+        tooBig: false,
     }
 
     main.innerText = operation.displayNumber;
@@ -57,7 +58,12 @@ main.innerText = operation.displayNumber;
 function buttonListener(){
     buttons.forEach(button => button.addEventListener('click', function() {
 
-       
+        
+
+        if(operation.tooBig) {
+            newOperation();
+        }
+
         if (button.id == 'clear') {
             newOperation();
         
@@ -69,6 +75,9 @@ function buttonListener(){
                 operation.displayNumber = this.innerText;
                 main.innerText = operation.displayNumber;
 
+            } else if(parseFloat(operation.displayNumber)>= 99999999999999 || operation.displayNumber.length >= 14) {
+                    main.innerText = 'Number too big'
+                    operation.tooBig = true;
             } else {
                 operation.displayNumber += this.innerText;
                 main.innerText = operation.displayNumber;
@@ -77,9 +86,15 @@ function buttonListener(){
 
         }else if (button.id == 'posneg') {
             //if number in display is 0 then posneg does nothing
-            if(operation.equalToken){
-                newOperation();
+            if(operation.equalToken) {
+                memory.innerText = ''
+                operation.memory = '';
+                operation.operatorToken = false;
+                operation.equalToken = false;
+                operation.lastPressed = '';
+                operation.tooBig = false;
             }
+
             if (operation.displayNumber == '0' || operation.displayNumber == '') {
                 console.log('do nothing');
 
@@ -121,6 +136,9 @@ function buttonListener(){
             if (operation.displayNumber.includes('.')) {
                 console.log('dot, do nothing');
 
+            } else if(operation.operatorToken && operation.displayNumber == ''){
+                operation.displayNumber = '0.';
+                main.innerText = operation.displayNumber;
             } else {
                 operation.displayNumber += this.innerText;
                 main.innerText = operation.displayNumber;
@@ -159,21 +177,34 @@ function buttonListener(){
                 if(operation.displayNumber.slice(-1) == '.') {
                     operation.displayNumber = operation.displayNumber.slice(0,-1);
                 }
-                memory.innerText = `${operation.memory} ${operation.operator} ${operation.displayNumber} =`;
-                operation.displayNumber = operate(operation.memory,operation.displayNumber, operation.operator);
-                main.innerText = operation.displayNumber;
-                operation.memory = '';
-                operation.operator = '';
-                operator.innerText = '';
-                operation.operatorToken = false;
-                operation.equalToken = true;
+                if(parseFloat(operate(operation.memory,operation.displayNumber, operation.operator)) > 99999999999999) {
+                    main.innerText = 'Number too big'
+                    operation.tooBig = true;
+
+                } else {
+                    memory.innerText = `${operation.memory} ${operation.operator} ${operation.displayNumber} =`;
+                    operation.displayNumber = operate(operation.memory,operation.displayNumber, operation.operator);
+                    main.innerText = operation.displayNumber;
+                    operation.memory = '';
+                    operation.operator = '';
+                    operator.innerText = '';
+                    operation.operatorToken = false;
+                    operation.equalToken = true;
+                }
+                
+               
             } else {
                 console.log ('do nothing equal')
             }
 
+
              
         }
-
+        if(operation.displayNumber != '' && operation.displayNumber != '' && operation.operator != '') {
+            equal.style.backgroundColor = "green";
+        } else {
+            equal.style.backgroundColor = "gray";
+        }
         console.table(operation);
 
     }))
